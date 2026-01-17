@@ -29,6 +29,24 @@
 </script>
 
 <script>
+
+import { useUser } from '@clerk/nextjs';
+
+function UserProfile() {
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (isSignedIn) {
+    window.location.replace('/app')
+  } else {
+    document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
+    Clerk.mountSignIn('#sign-in')
+  }
+}
+  
 window.addEventListener('load', async () => {
   await Clerk.load({})
   if (Clerk.user) {
