@@ -31,12 +31,10 @@
 <script>
   window.addEventListener('load', async function () {
     await Clerk.load()
-    const app = document.getElementById('app')
-
-    if (Clerk.isSignedIn) {
+    if (Clerk.user) {
       window.location.replace('/app')
     } else {
-      app.innerHTML = '<div id="sign-in"></div>'
+      document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
       Clerk.mountSignIn(document.getElementById('sign-in'))
     }
   })
