@@ -6,31 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body {
+    body { 
       font-family: "gg sans", Helvetica, Arial, sans-serif;
       background: #36393f;
-      color: #dcddde;
       height: 100vh;
-      display: grid;
-      place-items: center;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    #app { min-width: 380px; }
+    #clerk-container { width: 100%; max-width: 420px; }
   </style>
 </head>
 <body>
-  <div id="app">Loading...</div>
+  <div id="clerk-container"></div>
 
-<script
-  async
-  crossorigin="anonymous"
-  data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k"
-  src="https://advanced-molly-53.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-></script>
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="sk_live_gvHwhS1TJcvkDx6wuDBZKV4WKZka1PVp0rEzA0la1KE"
+    src="https://advanced-molly-53.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+  ></script>
+
   <script>
     window.addEventListener('load', async () => {
       await Clerk.load({})
-      document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
-      Clerk.mountSignIn('#sign-in')
+      Clerk.mountSignIn(document.getElementById('clerk-container'))
     })
   </script>
 </body>
