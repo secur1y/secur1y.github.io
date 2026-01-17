@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DServer - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "gg sans", Helvetica, Arial, sans-serif;
+      background: #36393f
+        url('https://images.alphacoders.com/131/1318929.png')
+        center / cover no-repeat;
+      color: #dcddde;
+      height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 72px;
+      background: #202225;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 12px;
+    }
+
+    /* DMs icon */
+    .dm-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #313338;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, border-radius 0.15s;
+    }
+
+    .dm-icon:hover {
+      background: #5865f2;
+      border-radius: 16px;
+    }
+
+    .dm-icon img {
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Main content */
+    #app {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      min-width: 380px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <div class="dm-icon" title="Direct Messages">
+      <img
+        src="https://raw.githubusercontent.com/simpsonslover/data/refs/heads/main/dms.png"
+        alt="DMs"
+      />
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">Loading...</div>
+
+  <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_YmVjb21pbmctYm94ZXItODQuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    src="https://becoming-boxer-84.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+    type="text/javascript"
+  ></script>
+
+  <script>
+    window.addEventListener('load', async () => {
+      await Clerk.load({})
+
+      const app = document.getElementById('app')
+
+      if (Clerk.user) {
+        app.innerHTML = '<div id="user-button"></div>'
+        Clerk.mountUserButton('#user-button')
+      } else {
+        app.innerHTML = '<div id="sign-in"></div>'
+        Clerk.mountSignIn('#sign-in', {
+          appearance: {
+            elements: {
+              rootBox: { width: '100%' }
+            }
+          }
+        })
+      }
+    })
+  </script>
+
+</body>
+</html>

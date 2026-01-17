@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DServer - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: "gg sans", Helvetica, Arial, sans-serif;
+      background: #36393f;
+      color: #dcddde;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    #app { min-width: 380px; }
+  </style>
+</head>
+<body>
+  <div id="app">Loading...</div>
+
+<script
+  async
+  crossorigin="anonymous"
+  data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k"
+  src="https://advanced-molly-53.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+></script>
+  <script>
+    window.addEventListener('load', async () => {
+      await Clerk.load({})
+      document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
+      Clerk.mountSignIn('#sign-in')
+    })
+  </script>
+</body>
+</html>
