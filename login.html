@@ -11,9 +11,8 @@
       background: #36393f;
       height: 100vh;
       margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
     }
     #app { width: 100%; max-width: 420px; }
   </style>
@@ -28,16 +27,17 @@
   src="https://clerk.secur1y.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
   type="text/javascript">
 </script>
+
 <script>
-  window.addEventListener('load', async function () {
-    await Clerk.load()
-    if (Clerk.user) {
-      window.location.replace('/app')
-    } else {
-      document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
-      Clerk.mountSignIn(document.getElementById('sign-in'))
-    }
-  })
+window.addEventListener('load', async () => {
+  await Clerk.load({})
+  if (Clerk.user) {
+    window.location.replace('/app')
+  } else {
+    document.getElementById('app').innerHTML = '<div id="sign-in"></div>'
+    Clerk.mountSignIn('#sign-in')
+  }
+})
 </script>
 </body>
 </html>
