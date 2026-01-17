@@ -5,55 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secur1y - Login</title>
     <style>
+        /* Base Styles */
         body {
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            /* Discord SVG Background */
+            /* Updated Background Image */
             background-image: url('https://github.com/secur1y/secur1y.github.io/blob/main/assets/lbg.png?raw=true');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-repeat: no-repeat;
+            font-family: sans-serif;
+            overflow: hidden; 
         }
 
-        .login-wrapper {
-            display: flex;
+        /* Top Left Header Image */
+        .title-image {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 500px; 
+            max-width: 90vw; 
+            z-index: 10;
+            filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6));
+        }
+
+        /* Clerk Container */
+        #clerk-auth-mount {
+            z-index: 5;
+        }
+
+        /* Mobile Warning Overlay */
+        #mobile-overlay {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            z-index: 9999;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 400px;
+            justify-content: center;
+            text-align: center;
             padding: 20px;
         }
 
-        .title-image {
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.3));
+        #mobile-overlay h1 {
+            color: #ff4444;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        /* Mount point for Clerk */
-        #clerk-auth-mount {
-            width: 100%;
-            display: flex;
-            justify-content: center;
+        #mobile-overlay p {
+            font-size: 0.85rem;
+            color: #bbbbbb;
+            margin-bottom: 25px;
+        }
+
+        #mobile-overlay button {
+            background: #5865F2;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        #mobile-overlay button:hover {
+            background: #4752c4;
+        }
+
+        /* Show overlay on screens smaller than 768px */
+        @media (max-width: 768px) {
+            #mobile-overlay {
+                display: flex;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-wrapper">
-        <img src="https://raw.githubusercontent.com/secur1y/secur1y.github.io/refs/heads/main/assets/title.png" 
-             alt="Secur1y Logo" 
-             class="title-image">
-
-        <div id="clerk-auth-mount"></div>
+    <div id="mobile-overlay">
+        <h1>THIS PAGE WILL BREAK/NOT WORK ON MOBILE!!</h1>
+        <p>If you understand, click the button below</p>
+        <button onclick="dismissWarning()">I Understand</button>
     </div>
+
+    <img src="https://raw.githubusercontent.com/secur1y/secur1y.github.io/refs/heads/main/assets/title.png" 
+         alt="Secur1y Logo" 
+         class="title-image">
+
+    <div id="clerk-auth-mount"></div>
 
     <script
       async
@@ -64,17 +117,19 @@
     </script>
 
     <script>
+        function dismissWarning() {
+            document.getElementById('mobile-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        }
+
         window.addEventListener('load', async function () {
             await Clerk.load();
 
             if (Clerk.user) {
-                // Redirect to /app if already logged in
                 window.location.href = "/app";
             } else {
-                // Mount Sign-In component
                 Clerk.mountSignIn(document.getElementById('clerk-auth-mount'), {
                     appearance: {
-                        // This makes the Clerk box match a dark/Discord theme better
                         variables: { colorPrimary: '#5865F2' }, 
                     },
                     afterSignInUrl: '/app',
