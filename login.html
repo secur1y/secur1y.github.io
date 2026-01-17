@@ -19,7 +19,7 @@
   </style>
 </head>
 <body>
-  <div id="clerk-container"></div>
+  <div id="app"></div>
 
   <script
     async
@@ -28,11 +28,28 @@
     src="https://advanced-molly-53.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
   ></script>
 
-  <script>
-    window.addEventListener('load', async () => {
-      await Clerk.load({})
-      Clerk.mountSignIn(document.getElementById('clerk-container'))
-    })
-  </script>
+<script>
+  window.addEventListener('load', async function () {
+    await Clerk.load()
+
+    if (Clerk.isSignedIn) {
+      document.getElementById('app').innerHTML = `
+        <div id="user-button"></div>
+      `
+
+      const userButtonDiv = document.getElementById('user-button')
+
+      Clerk.mountUserButton(userButtonDiv)
+    } else {
+      document.getElementById('app').innerHTML = `
+        <div id="sign-in"></div>
+      `
+
+      const signInDiv = document.getElementById('sign-in')
+
+      Clerk.mountSignIn(signInDiv)
+    }
+  })
+</script>
 </body>
 </html>
