@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>DServer - Login</title>
+  <title>DServer - App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: "gg sans", Helvetica, Arial, sans-serif;
       background: #36393f
@@ -17,7 +15,6 @@
       height: 100vh;
       display: flex;
     }
-
     /* Sidebar */
     .sidebar {
       width: 72px;
@@ -27,7 +24,6 @@
       justify-content: center;
       padding-top: 12px;
     }
-
     /* DMs icon */
     .dm-icon {
       width: 48px;
@@ -40,17 +36,14 @@
       cursor: pointer;
       transition: background 0.15s, border-radius 0.15s;
     }
-
     .dm-icon:hover {
       background: #5865f2;
       border-radius: 16px;
     }
-
     .dm-icon img {
       width: 28px;
       height: 28px;
     }
-
     /* Main content */
     #app {
       flex: 1;
@@ -61,7 +54,6 @@
   </style>
 </head>
 <body>
-
   <!-- LEFT SIDEBAR -->
   <div class="sidebar">
     <div class="dm-icon" title="Direct Messages">
@@ -71,10 +63,8 @@
       />
     </div>
   </div>
-
   <!-- APP -->
   <div id="app">Loading...</div>
-
   <script
     async
     crossorigin="anonymous"
@@ -82,28 +72,40 @@
     src="https://becoming-boxer-84.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
     type="text/javascript"
   ></script>
-
   <script>
-    window.addEventListener('load', async () => {
-      await Clerk.load({})
-
-      const app = document.getElementById('app')
-
-      if (Clerk.user) {
-        app.innerHTML = '<div id="user-button"></div>'
-        Clerk.mountUserButton('#user-button')
-      } else {
-        app.innerHTML = '<div id="sign-in"></div>'
-        Clerk.mountSignIn('#sign-in', {
-          appearance: {
-            elements: {
-              rootBox: { width: '100%' }
-            }
-          }
-        })
+    async function initApp() {
+      try {
+        // Wait for Clerk to be available
+        while (typeof Clerk === 'undefined') {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        await Clerk.load();
+        
+        const app = document.getElementById('app');
+        
+        // Check if user is signed in
+        if (Clerk.user) {
+          // User is authenticated, show the app
+          app.innerHTML = '<div id="user-button"></div>';
+          Clerk.mountUserButton('#user-button');
+        } else {
+          // User is NOT authenticated, redirect to login
+          window.location.href = '/login';
+        }
+      } catch (error) {
+        console.error('Clerk initialization error:', error);
+        // On error, also redirect to login
+        window.location.href = '/login';
       }
-    })
+    }
+    
+    // Start initialization when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
-
 </body>
 </html>
