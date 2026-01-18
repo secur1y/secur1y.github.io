@@ -12,5 +12,11 @@
     <h3 class="center-text">DServer</h3>
     <p class="center-text">created by errorrail</p>
     <button class="center-text" onclick="window.location.href=`/login`">Launch</button>
+    <script>
+        if (location.protocol !== 'https:') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        } 
+
+    </script>
 </head>
 </html>

@@ -149,6 +149,11 @@
     import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
     
     // DMs Firebase Config
+
+    if (location.protocol !== 'https:') {
+      location.replace(`https:${location.href.substring(location.protocol.length)}`);
+    } 
+
     const dmsConfig = {
       apiKey: "AIzaSyAMLiU4bxYMI06gYXmx5FSUaKnN3ImVERs",
       authDomain: "ds-dms-662ce.firebaseapp.com",
