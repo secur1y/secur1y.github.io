@@ -466,7 +466,7 @@
     </div>
   </div>
 
-  <!-- Add Friend Modal -->
+    <!-- Add Friend Modal -->
   <div class="modal-overlay" id="addFriendModal">
     <div class="modal">
       <div class="modal-header">Add Friend</div>
@@ -479,8 +479,8 @@
         />
       </div>
       <div class="modal-footer">
-        <button class="modal-btn modal-btn-cancel" onclick="closeAddFriendModal()">Cancel</button>
-        <button class="modal-btn modal-btn-primary" id="sendRequestBtn" onclick="sendFriendRequest()">Send Request</button>
+        <button class="modal-btn modal-btn-cancel" id="cancelBtn">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="sendRequestBtn">Send Request</button>
       </div>
     </div>
   </div>
@@ -538,6 +538,16 @@
         document.getElementById('addFriendModal').classList.add('active');
         document.getElementById('friendUsernameInput').value = '';
       });
+
+      document.getElementById('cancelBtn').addEventListener('click', closeAddFriendModal);
+      document.getElementById('sendRequestBtn').addEventListener('click', sendFriendRequest);
+
+      // Close modal when clicking outside
+      document.getElementById('addFriendModal').addEventListener('click', (e) => {
+        if (e.target.id === 'addFriendModal') {
+          closeAddFriendModal();
+        }
+      });
     }
 
     function closeAddFriendModal() {
@@ -555,14 +565,14 @@
       sendBtn.textContent = 'Sending...';
 
       try {
-        const { ref, set, get, push } = window.firebaseDB;
+        const { doc, setDoc, getDoc, addDoc, collection } = window.firebaseDB;
         
         // Create a unique chat ID (sort user IDs to ensure consistency)
         const chatId = [window.currentUserId, friendId].sort().join('_');
         
         // Check if conversation already exists
-        const existingConvoRef = ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`);
-        const existingConvo = await get(existingConvoRef);
+        const existingConvoRef = doc(window.dmsDB, `users/${window.currentUserId}/conversations/${chatId}`);
+        const existingConvo = await getDoc(existingConvoRef);
         
         if (existingConvo.exists()) {
           alert('Conversation already exists!');
@@ -573,22 +583,22 @@
         }
 
         // Create conversation for current user
-        const userConvoRef = ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`);
-        await set(userConvoRef, {
+        await setDoc(doc(window.dmsDB, `users/${window.currentUserId}/conversations/${chatId}`), {
           name: friendId,
-          userId: friendId
+          userId: friendId,
+          createdAt: Date.now()
         });
 
         // Create conversation for friend
-        const friendConvoRef = ref(window.dmsDB, `conversations/${friendId}/${chatId}`);
-        await set(friendConvoRef, {
+        await setDoc(doc(window.dmsDB, `users/${friendId}/conversations/${chatId}`), {
           name: Clerk.user.firstName || window.currentUserId,
-          userId: window.currentUserId
+          userId: window.currentUserId,
+          createdAt: Date.now()
         });
 
         // Send initial message
-        const messagesRef = ref(window.dmsDB, `messages/${chatId}`);
-        await push(messagesRef, {
+        const messagesRef = collection(window.dmsDB, `chats/${chatId}/messages`);
+        await addDoc(messagesRef, {
           author: 'System',
           text: 'Conversation started!',
           timestamp: Date.now(),
@@ -610,20 +620,20 @@
     window.sendFriendRequest = sendFriendRequest;
 
     function loadDMConversations() {
-      const { ref, onValue } = window.firebaseDB;
-      const conversationsRef = ref(window.dmsDB, `conversations/${window.currentUserId}`);
+      const { collection, onSnapshot } = window.firebaseDB;
+      const conversationsRef = collection(window.dmsDB, `users/${window.currentUserId}/conversations`);
       
-      onValue(conversationsRef, (snapshot) => {
-        const conversations = snapshot.val();
+      onSnapshot(conversationsRef, (snapshot) => {
         const container = document.getElementById('dmConversations');
         
-        if (!conversations) {
+        if (snapshot.empty) {
           container.innerHTML = '<div class="empty-state"><div>No conversations yet</div></div>';
           return;
         }
 
         container.innerHTML = '';
-        Object.entries(conversations).forEach(([chatId, convo]) => {
+        snapshot.forEach((docSnap) => {
+          const convo = docSnap.data();
           const item = document.createElement('div');
           item.className = 'dm-item';
           item.innerHTML = `
@@ -632,7 +642,7 @@
               <div class="dm-item-name">${convo.name}</div>
             </div>
           `;
-          item.onclick = () => openChat(chatId, convo.name);
+          item.onclick = () => openChat(docSnap.id, convo.name);
           container.appendChild(item);
         });
       });
@@ -649,20 +659,21 @@
       });
       if (clickedItem) clickedItem.classList.add('active');
 
-      const { ref, onValue } = window.firebaseDB;
-      const messagesRef = ref(window.dmsDB, `messages/${chatId}`);
+      const { collection, query, orderBy, onSnapshot } = window.firebaseDB;
+      const messagesRef = collection(window.dmsDB, `chats/${chatId}/messages`);
+      const messagesQuery = query(messagesRef, orderBy('timestamp', 'asc'));
       
-      onValue(messagesRef, (snapshot) => {
-        const messages = snapshot.val();
+      onSnapshot(messagesQuery, (snapshot) => {
         const container = document.getElementById('chatMessages');
         
-        if (!messages) {
+        if (snapshot.empty) {
           container.innerHTML = '<div class="empty-state"><div>No messages yet. Start the conversation!</div></div>';
           return;
         }
 
         container.innerHTML = '';
-        Object.values(messages).forEach(msg => {
+        snapshot.forEach((docSnap) => {
+          const msg = docSnap.data();
           const messageEl = document.createElement('div');
           messageEl.className = 'message';
           messageEl.innerHTML = `
@@ -699,10 +710,10 @@
       
       if (!text || !window.currentChatId) return;
 
-      const { ref, push } = window.firebaseDB;
-      const messagesRef = ref(window.dmsDB, `messages/${window.currentChatId}`);
+      const { collection, addDoc } = window.firebaseDB;
+      const messagesRef = collection(window.dmsDB, `chats/${window.currentChatId}/messages`);
       
-      await push(messagesRef, {
+      await addDoc(messagesRef, {
         author: Clerk.user.firstName || 'User',
         text: text,
         timestamp: Date.now(),
