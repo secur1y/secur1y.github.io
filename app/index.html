@@ -29,8 +29,8 @@
     }
 
     #loading-spinner {
-      width: 96px;
-      height: 96px;
+      width: 150px;
+      height: 150px;
       animation: spin 1.2s linear infinite;
     }
 
@@ -390,6 +390,7 @@
         ? `<img src="${Clerk.user.imageUrl}"><div class="status-indicator"></div>`
         : `<span style="color: white; font-weight: bold;">${Clerk.user.firstName?.[0] || 'U'}</span><div class="status-indicator"></div>`;
 
+      // Hide loading overlay
       overlay.style.opacity = '0';
       overlay.style.pointerEvents = 'none';
       setTimeout(() => overlay.remove(), 300);
