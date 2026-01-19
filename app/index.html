@@ -155,6 +155,22 @@
       border-bottom: 1px solid #1e1f22;
       font-weight: 600;
       font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .add-friend-btn {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      color: #b5bac1;
+    }
+
+    .add-friend-btn:hover {
+      opacity: 1;
     }
 
     .dm-conversations {
@@ -304,6 +320,99 @@
       gap: 12px;
       color: #949ba4;
     }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #313338;
+      border-radius: 8px;
+      width: 440px;
+      max-width: 90vw;
+    }
+
+    .modal-header {
+      padding: 16px;
+      font-weight: 600;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .modal-body {
+      padding: 0 16px 16px;
+    }
+
+    .modal-input {
+      width: 100%;
+      background: #1e1f22;
+      border: 1px solid #1e1f22;
+      border-radius: 4px;
+      padding: 10px;
+      color: #dcddde;
+      font-size: 14px;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: #5865f2;
+    }
+
+    .modal-footer {
+      padding: 16px;
+      background: #2b2d31;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .modal-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .modal-btn-cancel {
+      background: transparent;
+      color: #dcddde;
+    }
+
+    .modal-btn-cancel:hover {
+      background: #4e5058;
+    }
+
+    .modal-btn-primary {
+      background: #5865f2;
+      color: white;
+    }
+
+    .modal-btn-primary:hover {
+      background: #4752c4;
+    }
+
+    .modal-btn-primary:disabled {
+      background: #4752c4;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 
@@ -332,7 +441,12 @@
   </div>
 
   <div class="dm-list">
-    <div class="dm-list-header">Direct Messages</div>
+    <div class="dm-list-header">
+      <span>Direct Messages</span>
+      <svg class="add-friend-btn" id="addFriendBtn" viewBox="0 0 24 24" fill="currentColor" title="Add Friend">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+      </svg>
+    </div>
     <div class="dm-conversations" id="dmConversations">
       <div class="empty-state">
         <div>No conversations yet</div>
@@ -349,6 +463,25 @@
     </div>
     <div class="chat-input-container" id="chatInputContainer" style="display: none;">
       <textarea class="chat-input" id="chatInput" placeholder="Type a message..." rows="1"></textarea>
+    </div>
+  </div>
+
+  <!-- Add Friend Modal -->
+  <div class="modal-overlay" id="addFriendModal">
+    <div class="modal">
+      <div class="modal-header">Add Friend</div>
+      <div class="modal-body">
+        <input 
+          type="text" 
+          class="modal-input" 
+          id="friendUsernameInput" 
+          placeholder="Enter friend's username or user ID"
+        />
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" onclick="closeAddFriendModal()">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="sendRequestBtn" onclick="sendFriendRequest()">Send Request</button>
+      </div>
     </div>
   </div>
 
@@ -397,7 +530,79 @@
 
       loadDMConversations();
       setupChatInput();
+      setupAddFriendButton();
     }
+
+    function setupAddFriendButton() {
+      document.getElementById('addFriendBtn').addEventListener('click', () => {
+        document.getElementById('addFriendModal').classList.add('active');
+        document.getElementById('friendUsernameInput').value = '';
+      });
+    }
+
+    function closeAddFriendModal() {
+      document.getElementById('addFriendModal').classList.remove('active');
+    }
+
+    async function sendFriendRequest() {
+      const input = document.getElementById('friendUsernameInput');
+      const friendId = input.value.trim();
+      
+      if (!friendId) return;
+
+      const sendBtn = document.getElementById('sendRequestBtn');
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending...';
+
+      try {
+        const { ref, set, get } = window.firebaseDB;
+        
+        // Create a unique chat ID (sort user IDs to ensure consistency)
+        const chatId = [window.currentUserId, friendId].sort().join('_');
+        
+        // Check if conversation already exists
+        const existingConvo = await get(ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`));
+        
+        if (existingConvo.exists()) {
+          alert('Conversation already exists!');
+          closeAddFriendModal();
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send Request';
+          return;
+        }
+
+        // Create conversation for both users
+        await set(ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`), {
+          name: friendId,
+          userId: friendId
+        });
+
+        await set(ref(window.dmsDB, `conversations/${friendId}/${chatId}`), {
+          name: Clerk.user.firstName || window.currentUserId,
+          userId: window.currentUserId
+        });
+
+        // Send initial message
+        await set(ref(window.dmsDB, `messages/${chatId}/initial`), {
+          author: 'System',
+          text: 'Conversation started!',
+          timestamp: Date.now(),
+          userId: 'system'
+        });
+
+        closeAddFriendModal();
+        alert('Friend request sent! Conversation created.');
+      } catch (error) {
+        console.error('Error sending friend request:', error);
+        alert('Failed to send friend request. Please try again.');
+      }
+
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send Request';
+    }
+
+    window.closeAddFriendModal = closeAddFriendModal;
+    window.sendFriendRequest = sendFriendRequest;
 
     function loadDMConversations() {
       const { ref, onValue } = window.firebaseDB;
