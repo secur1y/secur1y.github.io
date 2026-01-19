@@ -4,18 +4,40 @@
   <meta charset="UTF-8" />
   <title>DServer - App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: "gg sans", Helvetica, Arial, sans-serif;
-      background: #36393f
-        url('https://images.alphacoders.com/131/1318929.png')
-        center / cover no-repeat;
+      background: #36393f url('https://images.alphacoders.com/131/1318929.png') center / cover no-repeat;
       color: #dcddde;
       height: 100vh;
       display: flex;
     }
-    /* Sidebar */
+
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+
+    #loading-spinner {
+      width: 96px;
+      height: 96px;
+      animation: spin 1.2s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     .sidebar {
       width: 72px;
       background: #202225;
@@ -25,12 +47,13 @@
       justify-content: space-between;
       padding: 12px 0;
     }
+
     .sidebar-top {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    /* DMs icon */
+
     .dm-icon {
       width: 48px;
       height: 48px;
@@ -42,15 +65,17 @@
       cursor: pointer;
       transition: background 0.15s, border-radius 0.15s;
     }
+
     .dm-icon:hover {
       background: #5865f2;
       border-radius: 16px;
     }
+
     .dm-icon img {
       width: 28px;
       height: 28px;
     }
-    /* User panel at bottom */
+
     .user-panel {
       width: 100%;
       background: #232428;
@@ -60,6 +85,7 @@
       align-items: center;
       gap: 8px;
     }
+
     .user-avatar {
       width: 32px;
       height: 32px;
@@ -72,9 +98,11 @@
       transition: border-radius 0.2s;
       position: relative;
     }
+
     .user-avatar:hover {
       border-radius: 16px;
     }
+
     .status-indicator {
       position: absolute;
       bottom: -2px;
@@ -85,11 +113,7 @@
       border: 3px solid #232428;
       border-radius: 50%;
     }
-    .user-avatar img {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-    }
+
     .panel-icon {
       width: 20px;
       height: 20px;
@@ -98,10 +122,11 @@
       transition: opacity 0.2s;
       color: #b5bac1;
     }
+
     .panel-icon:hover {
       opacity: 1;
     }
-    /* Main content */
+
     #app {
       flex: 1;
       display: grid;
@@ -110,140 +135,95 @@
     }
   </style>
 </head>
+
 <body>
-  <!-- LEFT SIDEBAR -->
+
+  <div id="loading-overlay">
+    <img id="loading-spinner" src="https://raw.githubusercontent.com/secur1y/secur1y.github.io/refs/heads/main/assets/box.png" alt="Loading">
+  </div>
+
   <div class="sidebar">
     <div class="sidebar-top">
-      <div class="dm-icon" title="Direct Messages">
-        <img
-          src="https://raw.githubusercontent.com/simpsonslover/data/refs/heads/main/dms.png"
-          alt="DMs"
-        />
+      <div class="dm-icon">
+        <img src="https://raw.githubusercontent.com/simpsonslover/data/refs/heads/main/dms.png">
       </div>
     </div>
+
     <div class="user-panel">
-      <div class="user-avatar" id="userAvatar" title="User Settings">
+      <div class="user-avatar" id="userAvatar">
         <div class="status-indicator"></div>
       </div>
-      <svg class="panel-icon" title="User Settings" viewBox="0 0 24 24" fill="currentColor">
+
+      <svg class="panel-icon" viewBox="0 0 24 24" fill="currentColor">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M19.738 10H22V14H19.739C19.498 14.931 19.1 15.798 18.565 16.564L20 18L18 20L16.565 18.564C15.797 19.099 14.932 19.498 14 19.738V22H10V19.738C9.069 19.498 8.203 19.099 7.436 18.564L6 20L4 18L5.436 16.564C4.901 15.799 4.502 14.932 4.262 14H2V10H4.262C4.502 9.068 4.9 8.202 5.436 7.436L4 6L6 4L7.436 5.436C8.202 4.9 9.068 4.502 10 4.262V2H14V4.261C14.932 4.502 15.797 4.9 16.565 5.435L18 3.999L20 5.999L18.564 7.436C19.099 8.202 19.498 9.069 19.738 10ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"/>
       </svg>
     </div>
   </div>
-  <!-- APP -->
+
   <div id="app">Loading...</div>
-  
-  <!-- Clerk Authentication -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k"
-    src="https://becoming-boxer-84.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-    type="text/javascript"
-  ></script>
-  
-  <!-- Firebase Setup -->
+
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k" src="https://becoming-boxer-84.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-analytics.js";
     import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
-    
-    // DMs Firebase Config
 
     if (location.protocol !== 'https:') {
       location.replace(`https:${location.href.substring(location.protocol.length)}`);
-    } 
+    }
 
-    const dmsConfig = {
+    const dmsApp = initializeApp({
       apiKey: "AIzaSyAMLiU4bxYMI06gYXmx5FSUaKnN3ImVERs",
       authDomain: "ds-dms-662ce.firebaseapp.com",
-      projectId: "ds-dms-662ce",
-      storageBucket: "ds-dms-662ce.firebasestorage.app",
-      messagingSenderId: "270686509510",
-      appId: "1:270686509510:web:8e48cb1e8f4b835e08fac7",
-      measurementId: "G-2J9E4L1R1M"
-    };
-    
-    // Servers Firebase Config
-    const serversConfig = {
+      projectId: "ds-dms-662ce"
+    }, "dms");
+
+    const serversApp = initializeApp({
       apiKey: "AIzaSyBqs41SZhIOx0vPa3Bz6drIFwSRRSaf8u0",
       authDomain: "dserver-1.firebaseapp.com",
       databaseURL: "https://dserver-1-default-rtdb.firebaseio.com",
-      projectId: "dserver-1",
-      storageBucket: "dserver-1.firebasestorage.app",
-      messagingSenderId: "381244713400",
-      appId: "1:381244713400:web:737b7455de0a4416c8474d",
-      measurementId: "G-4SXBEHWTMC"
-    };
-    
-    // Initialize both Firebase apps
-    const dmsApp = initializeApp(dmsConfig, "dms");
-    const serversApp = initializeApp(serversConfig, "servers");
-    
-    // Get analytics for both
-    const dmsAnalytics = getAnalytics(dmsApp);
-    const serversAnalytics = getAnalytics(serversApp);
-    
-    // Get database references
-    const dmsDB = getDatabase(dmsApp);
-    const serversDB = getDatabase(serversApp);
-    
-    // Make databases available globally
-    window.dmsDB = dmsDB;
-    window.serversDB = serversDB;
-    
-    // Export Firebase functions globally for easy access
+      projectId: "dserver-1"
+    }, "servers");
+
+    window.dmsDB = getDatabase(dmsApp);
+    window.serversDB = getDatabase(serversApp);
     window.firebaseDB = { ref, set, get, onValue };
-    
-    console.log("Firebase initialized - DMs and Servers databases ready!");
   </script>
-  
-  <!-- Clerk Initialization -->
+
   <script>
     async function initApp() {
-      try {
-        // Wait for Clerk to be available
-        while (typeof Clerk === 'undefined') {
-          await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        await Clerk.load();
-        
-        const app = document.getElementById('app');
-        
-        // Check if user is signed in
-        if (Clerk.user) {
-          // User is authenticated, show the app
-          app.innerHTML = '<div id="user-button"></div>';
-          Clerk.mountUserButton('#user-button');
-          
-          // Set user avatar
-          const userAvatar = document.getElementById('userAvatar');
-          if (Clerk.user.imageUrl) {
-            userAvatar.innerHTML = `<img src="${Clerk.user.imageUrl}" alt="User"><div class="status-indicator"></div>`;
-          } else {
-            userAvatar.innerHTML = `<span style="color: white; font-weight: bold;">${Clerk.user.firstName?.[0] || 'U'}</span><div class="status-indicator"></div>`;
-          }
-          
-          console.log("User authenticated:", Clerk.user.id);
-          console.log("Firebase databases ready to use!");
-        } else {
-          // User is NOT authenticated, redirect to login
-          window.location.href = '/login';
-        }
-      } catch (error) {
-        console.error('Clerk initialization error:', error);
-        // On error, also redirect to login
-        window.location.href = '/login';
+      while (typeof Clerk === 'undefined') {
+        await new Promise(r => setTimeout(r, 100));
       }
+
+      await Clerk.load();
+
+      const app = document.getElementById('app');
+      const overlay = document.getElementById('loading-overlay');
+
+      if (!Clerk.user) {
+        location.href = '/login';
+        return;
+      }
+
+      app.innerHTML = '<div id="user-button"></div>';
+      Clerk.mountUserButton('#user-button');
+
+      const avatar = document.getElementById('userAvatar');
+      avatar.innerHTML = Clerk.user.imageUrl
+        ? `<img src="${Clerk.user.imageUrl}"><div class="status-indicator"></div>`
+        : `<span>${Clerk.user.firstName?.[0] || 'U'}</span><div class="status-indicator"></div>`;
+
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      setTimeout(() => overlay.remove(), 300);
     }
-    
-    // Start initialization when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-      initApp();
-    }
+
+    document.readyState === 'loading'
+      ? document.addEventListener('DOMContentLoaded', initApp)
+      : initApp();
   </script>
+
 </body>
 </html>
