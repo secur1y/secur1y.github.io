@@ -556,25 +556,44 @@
 
     async function sendFriendRequest() {
       const input = document.getElementById('friendUsernameInput');
-      const friendId = input.value.trim();
+      const friendUsername = input.value.trim();
       
-      if (!friendId) return;
+      if (!friendUsername) {
+        alert('Please enter a username');
+        return;
+      }
 
       const sendBtn = document.getElementById('sendRequestBtn');
       sendBtn.disabled = true;
       sendBtn.textContent = 'Sending...';
 
       try {
-        const { doc, setDoc, getDoc, addDoc, collection } = window.firebaseDB;
+        const { doc, setDoc, getDoc, addDoc, collection, getDocs, query, where } = window.firebaseDB;
+        
+        // First, look up the friend's user ID by username
+        const usersRef = collection(window.dmsDB, 'users');
+        const q = query(usersRef, where('username', '==', friendUsername));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+          alert('User not found. Make sure they have logged in at least once.');
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send Request';
+          return;
+        }
+
+        const friendDoc = querySnapshot.docs[0];
+        const friendId = friendDoc.id;
+        const friendData = friendDoc.data();
         
         // Create a unique chat ID (sort user IDs to ensure consistency)
         const chatId = [window.currentUserId, friendId].sort().join('_');
         
-        // Check if conversation already exists
-        const existingConvoRef = doc(window.dmsDB, `users/${window.currentUserId}/conversations/${chatId}`);
-        const existingConvo = await getDoc(existingConvoRef);
+        // Check if conversation already exists for current user
+        const myConvoRef = doc(window.dmsDB, `users/${window.currentUserId}/conversations/${chatId}`);
+        const myConvo = await getDoc(myConvoRef);
         
-        if (existingConvo.exists()) {
+        if (myConvo.exists()) {
           alert('Conversation already exists!');
           closeAddFriendModal();
           sendBtn.disabled = false;
@@ -582,18 +601,36 @@
           return;
         }
 
-        // Create conversation for current user
+        // Get current user's name
+        const currentUserName = Clerk.user.username || Clerk.user.firstName || window.currentUserId;
+
+        // Create conversation for BOTH users with proper data
+        const conversationData = {
+          chatId: chatId,
+          createdAt: Date.now(),
+          lastMessage: 'Conversation started!',
+          lastMessageTime: Date.now()
+        };
+
+        // Create for current user
         await setDoc(doc(window.dmsDB, `users/${window.currentUserId}/conversations/${chatId}`), {
-          name: friendId,
-          userId: friendId,
-          createdAt: Date.now()
+          ...conversationData,
+          name: friendUsername,
+          otherUserId: friendId
         });
 
-        // Create conversation for friend
+        // Create for friend
         await setDoc(doc(window.dmsDB, `users/${friendId}/conversations/${chatId}`), {
-          name: Clerk.user.firstName || window.currentUserId,
-          userId: window.currentUserId,
-          createdAt: Date.now()
+          ...conversationData,
+          name: currentUserName,
+          otherUserId: window.currentUserId
+        });
+
+        // Create the chat document
+        await setDoc(doc(window.dmsDB, `chats/${chatId}`), {
+          participants: [window.currentUserId, friendId],
+          createdAt: Date.now(),
+          createdBy: window.currentUserId
         });
 
         // Send initial message
@@ -607,6 +644,9 @@
 
         closeAddFriendModal();
         alert('Friend added! Conversation created.');
+        
+        // Refresh the conversation list
+        loadDMConversations();
       } catch (error) {
         console.error('Error sending friend request:', error);
         alert('Failed to add friend: ' + error.message);
