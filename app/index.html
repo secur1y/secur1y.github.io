@@ -489,7 +489,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-    import { getDatabase, ref, set, get, onValue, push, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-database.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
     const dmsApp = initializeApp({
       apiKey: "AIzaSyAMLiU4bxYMI06gYXmx5FSUaKnN3ImVERs",
@@ -497,8 +497,8 @@
       projectId: "ds-dms-662ce"
     }, "dms");
 
-    window.dmsDB = getDatabase(dmsApp);
-    window.firebaseDB = { ref, set, get, onValue, push, query, orderByChild };
+    window.dmsDB = getFirestore(dmsApp);
+    window.firebaseDB = { collection, doc, setDoc, getDoc, getDocs, addDoc, onSnapshot, query, orderBy };
     window.currentUserId = null;
     window.currentChatId = null;
 
