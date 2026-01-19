@@ -555,13 +555,14 @@
       sendBtn.textContent = 'Sending...';
 
       try {
-        const { ref, set, get } = window.firebaseDB;
+        const { ref, set, get, push } = window.firebaseDB;
         
         // Create a unique chat ID (sort user IDs to ensure consistency)
         const chatId = [window.currentUserId, friendId].sort().join('_');
         
         // Check if conversation already exists
-        const existingConvo = await get(ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`));
+        const existingConvoRef = ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`);
+        const existingConvo = await get(existingConvoRef);
         
         if (existingConvo.exists()) {
           alert('Conversation already exists!');
@@ -571,19 +572,23 @@
           return;
         }
 
-        // Create conversation for both users
-        await set(ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`), {
+        // Create conversation for current user
+        const userConvoRef = ref(window.dmsDB, `conversations/${window.currentUserId}/${chatId}`);
+        await set(userConvoRef, {
           name: friendId,
           userId: friendId
         });
 
-        await set(ref(window.dmsDB, `conversations/${friendId}/${chatId}`), {
+        // Create conversation for friend
+        const friendConvoRef = ref(window.dmsDB, `conversations/${friendId}/${chatId}`);
+        await set(friendConvoRef, {
           name: Clerk.user.firstName || window.currentUserId,
           userId: window.currentUserId
         });
 
         // Send initial message
-        await set(ref(window.dmsDB, `messages/${chatId}/initial`), {
+        const messagesRef = ref(window.dmsDB, `messages/${chatId}`);
+        await push(messagesRef, {
           author: 'System',
           text: 'Conversation started!',
           timestamp: Date.now(),
@@ -591,10 +596,10 @@
         });
 
         closeAddFriendModal();
-        alert('Friend request sent! Conversation created.');
+        alert('Friend added! Conversation created.');
       } catch (error) {
         console.error('Error sending friend request:', error);
-        alert('Failed to send friend request. Please try again.');
+        alert('Failed to add friend: ' + error.message);
       }
 
       sendBtn.disabled = false;
