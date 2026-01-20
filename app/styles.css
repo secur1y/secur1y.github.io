@@ -175,6 +175,75 @@ body {
   border-color: #5865f2;
 }
 
+/* Channels */
+.channel-header {
+  padding: 16px 8px 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #949ba4;
+  text-transform: uppercase;
+}
+
+.channel-item {
+  padding: 6px 8px;
+  margin: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+  font-size: 15px;
+  color: #949ba4;
+}
+
+.channel-item:hover {
+  background: #35373c;
+  color: #dcddde;
+}
+
+.channel-item.active {
+  background: #404249;
+  color: #dcddde;
+}
+
+.channel-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Context Menu */
+.context-menu {
+  position: fixed;
+  background: #111214;
+  border-radius: 4px;
+  padding: 6px;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 1000;
+}
+
+.context-menu.active {
+  display: block;
+}
+
+.context-menu-item {
+  padding: 10px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s;
+  color: #dcddde;
+}
+
+.context-menu-item:hover {
+  background: #5865f2;
+  color: white;
+}
+
 .user-panel {
   width: 100%;
   background: #232428;
