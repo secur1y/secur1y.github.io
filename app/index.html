@@ -14,8 +14,17 @@
 
   <div class="sidebar">
     <div class="sidebar-top">
-      <div class="dm-icon">
+      <div class="dm-icon" id="dmIcon">
         <img src="https://raw.githubusercontent.com/simpsonslover/data/refs/heads/main/dms.png">
+      </div>
+      <div class="server-separator"></div>
+      <div id="serversList"></div>
+      <div class="add-server-icon" id="addServerBtn" title="Add a Server">
+        +
+        <div class="server-dropdown" id="serverDropdown">
+          <div class="dropdown-item" id="createServerMenuBtn">Create Server</div>
+          <div class="dropdown-item" id="joinServerMenuBtn">Join Server</div>
+        </div>
       </div>
     </div>
 
@@ -133,17 +142,48 @@
   <!-- Changelog Modal -->
   <div class="modal-overlay active" id="changelogModal">
     <div class="modal">
-      <div class="modal-header">Update 1.04</div>
+      <div class="modal-header">Update 1.05</div>
       <div class="modal-body">
         <ul style="list-style: none; padding: 0; line-height: 2;">
-          <li>- Fixed bugs</li>
-          <li>- Added DMs</li>
-          <li>- User system</li>
+          <li>- </li>
+          <li>- Servers</li>
+          <li>- Dms</li>
           <li>- PFP Changes and name changes</li>
+          <li>REPORT BUGS TO admin@secur1y.com!!</li>
         </ul>
       </div>
       <div class="modal-footer">
         <button class="modal-btn modal-btn-primary" id="closeChangelogBtn">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Server Modal -->
+  <div class="modal-overlay" id="createServerModal">
+    <div class="modal">
+      <div class="modal-header">Create Your Server</div>
+      <div class="modal-body">
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
+        <input type="text" class="modal-input" id="serverNameInput" placeholder="My Awesome Server">
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancelCreateBtn">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="confirmCreateBtn">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Server Modal -->
+  <div class="modal-overlay" id="joinServerModal">
+    <div class="modal">
+      <div class="modal-header">Join a Server</div>
+      <div class="modal-body">
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
+        <input type="text" class="modal-input" id="inviteCodeInput" placeholder="Enter invite code">
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancelJoinBtn">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="confirmJoinBtn">Join Server</button>
       </div>
     </div>
   </div>
