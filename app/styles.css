@@ -376,6 +376,11 @@ body {
   font-size: 15px;
   line-height: 1.4;
   word-wrap: break-word;
+  margin-top: 2px;
+}
+
+.message-text:first-of-type {
+  margin-top: 0;
 }
 
 .chat-input-container {
