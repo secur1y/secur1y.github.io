@@ -24,9 +24,14 @@
         <div class="status-indicator"></div>
       </div>
 
-      <svg class="panel-icon" viewBox="0 0 24 24" fill="currentColor">
+      <svg class="panel-icon" id="settingsBtn" viewBox="0 0 24 24" fill="currentColor">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M19.738 10H22V14H19.739C19.498 14.931 19.1 15.798 18.565 16.564L20 18L18 20L16.565 18.564C15.797 19.099 14.932 19.498 14 19.738V22H10V19.738C9.069 19.498 8.203 19.099 7.436 18.564L6 20L4 18L5.436 16.564C4.901 15.799 4.502 14.932 4.262 14H2V10H4.262C4.502 9.068 4.9 8.202 5.436 7.436L4 6L6 4L7.436 5.436C8.202 4.9 9.068 4.502 10 4.262V2H14V4.261C14.932 4.502 15.797 4.9 16.565 5.435L18 3.999L20 5.999L18.564 7.436C19.099 8.202 19.498 9.069 19.738 10ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"/>
       </svg>
+      
+      <div class="settings-dropdown" id="settingsDropdown">
+        <div class="dropdown-item" id="accountBtn">Account</div>
+        <div class="dropdown-item" id="settingsMenuBtn">Settings</div>
+      </div>
     </div>
   </div>
 
@@ -72,6 +77,55 @@
       <div class="modal-footer">
         <button class="modal-btn modal-btn-cancel" id="cancelBtn">Cancel</button>
         <button class="modal-btn modal-btn-primary" id="sendRequestBtn">Send Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Settings Modal -->
+  <div class="modal-overlay" id="accountModal">
+    <div class="modal">
+      <div class="modal-header">Account Settings</div>
+      <div class="modal-body">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div class="account-avatar" id="accountAvatar"></div>
+          <div style="margin-top: 12px; font-size: 18px; font-weight: 600;" id="accountUsername">Username</div>
+        </div>
+        <label for="pfpInput" class="upload-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+          </svg>
+          Upload Profile Picture
+        </label>
+        <input type="file" id="pfpInput" accept="image/*" style="display: none;">
+        
+        <div style="margin-top: 20px;">
+          <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Display Name</label>
+          <input type="text" class="modal-input" id="displayNameInput" placeholder="Display Name" style="margin-bottom: 16px;">
+          
+          <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Username</label>
+          <input type="text" class="modal-input" id="usernameInput" placeholder="Username">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="closeAccountBtn">Close</button>
+        <button class="modal-btn modal-btn-primary" id="saveAccountBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div class="modal-overlay" id="userProfileModal">
+    <div class="modal">
+      <div class="modal-header">User Profile</div>
+      <div class="modal-body">
+        <div style="text-align: center;">
+          <div class="account-avatar" id="profileAvatar"></div>
+          <div style="margin-top: 12px; font-size: 20px; font-weight: 600;" id="profileDisplayName">Display Name</div>
+          <div style="margin-top: 4px; font-size: 14px; color: #b5bac1;" id="profileUsername">@username</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="closeProfileBtn">Close</button>
       </div>
     </div>
   </div>
