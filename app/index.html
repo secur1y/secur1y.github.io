@@ -46,7 +46,7 @@
 
   <div class="dm-list">
     <div class="dm-list-header">
-      <span>Direct Messages</span>
+      <span id="dmListTitle">Direct Messages</span>
       <svg class="add-friend-btn" id="addFriendBtn" viewBox="0 0 24 24" fill="currentColor" title="Add Friend">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
       </svg>
@@ -55,6 +55,12 @@
       <div class="empty-state">
         <div>No conversations yet</div>
       </div>
+    </div>
+    <div id="channelsList" style="display: none;">
+      <div class="channel-header">
+        <span>TEXT CHANNELS</span>
+      </div>
+      <div id="channelsContainer"></div>
     </div>
   </div>
 
@@ -142,14 +148,13 @@
   <!-- Changelog Modal -->
   <div class="modal-overlay active" id="changelogModal">
     <div class="modal">
-      <div class="modal-header">Update 1.05</div>
+      <div class="modal-header">Update 1.04</div>
       <div class="modal-body">
         <ul style="list-style: none; padding: 0; line-height: 2;">
-          <li>- </li>
-          <li>- Servers</li>
-          <li>- Dms</li>
-          <li>- PFP Changes and name changes</li>
-          <li>REPORT BUGS TO admin@secur1y.com!!</li>
+          <li>✅ Fixed bugs</li>
+          <li>✅ Added DMs</li>
+          <li>✅ User system</li>
+          <li>✅ PFP Changes and name changes</li>
         </ul>
       </div>
       <div class="modal-footer">
@@ -186,6 +191,36 @@
         <button class="modal-btn modal-btn-primary" id="confirmJoinBtn">Join Server</button>
       </div>
     </div>
+  </div>
+
+  <!-- Server Settings Modal -->
+  <div class="modal-overlay" id="serverSettingsModal">
+    <div class="modal">
+      <div class="modal-header">Server Settings</div>
+      <div class="modal-body">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div class="account-avatar" id="serverAvatar"></div>
+        </div>
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
+        <input type="text" class="modal-input" id="serverSettingsName" placeholder="Server Name" style="margin-bottom: 16px;">
+        
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <input type="text" class="modal-input" id="serverInviteCode" readonly style="margin-bottom: 0;">
+          <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
+        <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
+        <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Context Menu -->
+  <div id="contextMenu" class="context-menu">
+    <div class="context-menu-item" id="serverSettingsMenuItem">Server Settings</div>
   </div>
 
   <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k" src="https://clerk.secur1y.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
