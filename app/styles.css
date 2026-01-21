@@ -517,6 +517,15 @@ body {
   text-overflow: ellipsis;
 }
 
+.dm-item-name.unread {
+  font-weight: 800;
+  color: #f2f3f5;
+}
+
+.dm-item.unread {
+  background: #404249;
+}
+
 .dm-item-badge {
   background: #f23f42;
   color: white;
