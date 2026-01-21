@@ -371,6 +371,128 @@ setTimeout(() => {
   }
 }, 2000);
 </script>
-  
+
+  <div class="modal-overlay" id="roleEditorModal">
+  <div class="modal">
+    <div class="modal-header">Edit Role</div>
+    <div class="modal-body">
+      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Role Name</label>
+      <input type="text" class="modal-input" id="roleEditorName" placeholder="Role Name">
+      
+      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Role Color</label>
+      <input type="color" class="modal-input" id="roleEditorColor" value="#dcddde">
+      
+      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Permissions</label>
+      <div class="permissions-list">
+        <label class="permission-item">
+          <input type="checkbox" id="permAdmin">
+          <div>
+            <div class="permission-name">Administrator</div>
+            <div class="permission-desc">All permissions</div>
+          </div>
+        </label>
+        <label class="permission-item">
+          <input type="checkbox" id="permManageMessages">
+          <div>
+            <div class="permission-name">Manage Messages</div>
+            <div class="permission-desc">Delete any message</div>
+          </div>
+        </label>
+        <label class="permission-item">
+          <input type="checkbox" id="permManageChannels">
+          <div>
+            <div class="permission-name">Manage Channels</div>
+            <div class="permission-desc">Create, edit, and delete channels and groups</div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" id="closeRoleEditorBtn">Cancel</button>
+      <button class="modal-btn modal-btn-primary" id="saveRoleBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Channel Settings Modal -->
+<div class="modal-overlay" id="channelSettingsModal">
+  <div class="modal">
+    <div class="modal-header">Channel Settings</div>
+    <div class="modal-body">
+      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Channel Name</label>
+      <input type="text" class="modal-input" id="channelSettingsName" placeholder="channel-name">
+      <div style="font-size: 12px; color: #949ba4; margin-top: 4px;">Lowercase, max 15 chars, spaces become dashes</div>
+      
+      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Who Can View This Channel</label>
+      <div style="font-size: 12px; color: #949ba4; margin-bottom: 8px;">Leave empty for everyone. Admin & Manage Channels bypass this.</div>
+      <div id="channelViewRoles" class="role-permissions-container"></div>
+      
+      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Who Can Send Messages</label>
+      <div style="font-size: 12px; color: #949ba4; margin-bottom: 8px;">Leave empty for everyone. Admin & Manage Channels bypass this.</div>
+      <div id="channelWriteRoles" class="role-permissions-container"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" id="closeChannelSettingsBtn">Cancel</button>
+      <button class="modal-btn modal-btn-primary" id="saveChannelSettingsBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Channel Context Menu -->
+<div id="channelContextMenu" class="context-menu">
+  <div class="context-menu-item" id="channelSettingsMenuItem">Channel Settings</div>
+  <div class="context-menu-item" id="deleteChannelMenuItem" style="color: #f23f42;">Delete Channel</div>
+</div>
+
+<!-- Update Server Settings Modal to include Roles tab -->
+<div class="modal-overlay" id="serverSettingsModal">
+  <div class="modal" style="width: 700px; max-width: 90vw;">
+    <div class="modal-header">
+      <div class="server-settings-tabs">
+        <div class="settings-tab active" id="serverOverviewTab">Overview</div>
+        <div class="settings-tab" id="serverRolesTab">Roles</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- Overview Content -->
+      <div id="serverOverviewContent">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div class="account-avatar" id="serverAvatar"></div>
+        </div>
+        
+        <label for="serverPfpInput" class="upload-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+          </svg>
+          Upload Server Picture
+        </label>
+        <input type="file" id="serverPfpInput" accept="image/*" style="display: none;">
+        
+        <label style="display: block; margin-bottom: 8px; margin-top: 20px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
+        <input type="text" class="modal-input" id="serverSettingsName" placeholder="Server Name" style="margin-bottom: 16px;">
+        
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <input type="text" class="modal-input" id="serverInviteCode" readonly style="margin-bottom: 0;">
+          <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
+        </div>
+      </div>
+      
+      <!-- Roles Content -->
+      <div id="serverRolesContent" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="margin: 0;">Server Roles</h3>
+          <button class="modal-btn modal-btn-primary" id="createRoleBtn">Create Role</button>
+        </div>
+        <div id="rolesListContainer" class="roles-list"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
+      <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
+      <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
