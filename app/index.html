@@ -194,30 +194,40 @@
     </div>
   </div>
 
-  <!-- Server Settings Modal -->
-  <div class="modal-overlay" id="serverSettingsModal">
-    <div class="modal">
-      <div class="modal-header">Server Settings</div>
-      <div class="modal-body">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <div class="account-avatar" id="serverAvatar"></div>
-        </div>
-        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
-        <input type="text" class="modal-input" id="serverSettingsName" placeholder="Server Name" style="margin-bottom: 16px;">
-        
-        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
-        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-          <input type="text" class="modal-input" id="serverInviteCode" readonly style="margin-bottom: 0;">
-          <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
-        </div>
+<!-- Replace your existing Server Settings Modal with this updated version -->
+<div class="modal-overlay" id="serverSettingsModal">
+  <div class="modal">
+    <div class="modal-header">Server Settings</div>
+    <div class="modal-body">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div class="account-avatar" id="serverAvatar"></div>
       </div>
-      <div class="modal-footer">
-        <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
-        <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
-        <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
+      
+      <!-- Add this upload button for server profile picture -->
+      <label for="serverPfpInput" class="upload-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+        </svg>
+        Upload Server Picture
+      </label>
+      <input type="file" id="serverPfpInput" accept="image/*" style="display: none;">
+      
+      <label style="display: block; margin-bottom: 8px; margin-top: 20px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
+      <input type="text" class="modal-input" id="serverSettingsName" placeholder="Server Name" style="margin-bottom: 16px;">
+      
+      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <input type="text" class="modal-input" id="serverInviteCode" readonly style="margin-bottom: 0;">
+        <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
       </div>
     </div>
+    <div class="modal-footer">
+      <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
+      <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
+      <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
+    </div>
   </div>
+</div>
 
   <!-- Context Menu -->
   <div id="contextMenu" class="context-menu">
