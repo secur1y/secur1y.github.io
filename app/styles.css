@@ -244,6 +244,54 @@ body {
   color: white;
 }
 
+/* Update Notification */
+.update-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #5865f2;
+  color: white;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  z-index: 2000;
+  display: none;
+  max-width: 300px;
+  animation: slideIn 0.3s ease;
+}
+
+.update-notification.active {
+  display: block;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.update-content strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.update-content p {
+  margin-bottom: 12px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.update-content button {
+  width: 100%;
+  margin-top: 8px;
+}
+
 .user-panel {
   width: 100%;
   background: #232428;
