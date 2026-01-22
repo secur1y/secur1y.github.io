@@ -11,6 +11,10 @@ body {
   overflow: hidden;
 }
 
+button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
 #app {
   display: flex;
   height: 100vh;
@@ -64,6 +68,10 @@ body {
   color: #fff;
 }
 
+.dm-item.pending {
+  opacity: 0.7;
+}
+
 .dm-item-avatar {
   flex-shrink: 0;
   width: 32px;
@@ -103,10 +111,6 @@ body {
   font-weight: 600;
 }
 
-.dm-item.pending {
-  opacity: 0.7;
-}
-
 .empty-state {
   display: flex;
   align-items: center;
@@ -130,39 +134,7 @@ body {
   overflow-y: auto;
 }
 
-.server-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #5865f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: #fff;
-  transition: background-color 0.2s, transform 0.1s;
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-.server-icon:hover {
-  background-color: #7289da;
-}
-
-.server-icon.active {
-  background-color: #5865f2;
-  box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.3);
-}
-
-.server-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ===== SERVER CONTROLS ===== */
+.server-icon,
 #dmIcon,
 #addServerBtn {
   width: 40px;
@@ -175,15 +147,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s;
+  overflow: hidden;
   margin: 0 auto;
+}
+
+.server-icon {
+  font-size: 0.85rem;
+  margin-top: 0;
+}
+
+#dmIcon,
+#addServerBtn {
+  font-size: 1.2rem;
   margin-top: 8px;
 }
 
+.server-icon:hover,
 #dmIcon:hover,
 #addServerBtn:hover {
   background-color: #7289da;
+}
+
+.server-icon.active {
+  background-color: #5865f2;
+  box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.3);
+}
+
+.server-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #addServerBtn {
@@ -299,6 +294,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.message-content div {
+  margin: 0;
+}
+
+.message-content .message-text:not(:first-of-type) {
+  margin-top: 2px;
 }
 
 .message-header {
@@ -583,10 +586,6 @@ body {
 }
 
 /* ===== BUTTONS ===== */
-button {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-}
-
 #settingsBtn {
   background: none;
   border: none;
@@ -602,23 +601,7 @@ button {
   color: #fff;
 }
 
-#addFriendBtn {
-  width: 100%;
-  padding: 10px;
-  background: #5865f2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  margin: 8px 0;
-  transition: background-color 0.2s;
-}
-
-#addFriendBtn:hover {
-  background-color: #7289da;
-}
-
+#addFriendBtn,
 #createChannelBtn {
   width: 100%;
   padding: 10px;
@@ -632,6 +615,7 @@ button {
   transition: background-color 0.2s;
 }
 
+#addFriendBtn:hover,
 #createChannelBtn:hover {
   background-color: #7289da;
 }
@@ -823,15 +807,6 @@ button {
 
 .context-menu-item svg {
   flex-shrink: 0;
-}
-
-/* ===== ADDITIONAL MESSAGE STYLING ===== */
-.message-content div {
-  margin: 0;
-}
-
-.message-content .message-text:not(:first-of-type) {
-  margin-top: 2px;
 }
 
 /* ===== LOADING OVERLAY ===== */
