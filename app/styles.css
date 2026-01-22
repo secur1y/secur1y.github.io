@@ -931,3 +931,18 @@ body {
   min-height: 100px;
   resize: vertical;
 }
+
+.dropdown-separator {
+  height: 1px;
+  background: #3f4147;
+  margin: 4px 0;
+}
+
+.settings-dropdown .dropdown-item:last-child {
+  color: #f23f42;
+}
+
+.settings-dropdown .dropdown-item:last-child:hover {
+  background: #f23f42;
+  color: white;
+}
