@@ -1015,3 +1015,15 @@ body {
 .server-icon {
   position: relative;
 }
+
+  .chat-input {
+  min-height: 44px;
+  max-height: 200px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.message-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
