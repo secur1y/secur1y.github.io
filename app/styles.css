@@ -946,3 +946,24 @@ body {
   background: #f23f42;
   color: white;
 }
+
+  .context-menu-item {
+  padding: 8px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #dbdee1;
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.context-menu-item svg {
+  flex-shrink: 0;
+}
+
+.context-menu-item:hover {
+  background: #5865f2;
+  color: white;
+}
