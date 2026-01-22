@@ -390,5 +390,23 @@
     <div class="members-header">MEMBERS</div>
     <div class="members-container" id="membersContainer"></div>
   </div>
+
+<!-- Create Channel Modal -->
+<div class="modal-overlay" id="createChannelModal">
+  <div class="modal">
+    <div class="modal-header">Create Channel</div>
+    <div class="modal-body">
+      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Channel Name</label>
+      <input type="text" class="modal-input" id="channelNameInput" placeholder="new-channel">
+      <div style="font-size: 12px; color: #949ba4; margin-top: 8px;">Channel names are lowercase with dashes instead of spaces</div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" id="cancelChannelBtn">Cancel</button>
+      <button class="modal-btn modal-btn-primary" id="confirmChannelBtn">Create</button>
+    </div>
+  </div>
+</div>
+  
 </body>
 </html>
+
