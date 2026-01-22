@@ -1033,3 +1033,57 @@ body {
   min-height: 100px;
   resize: vertical;
 }
+
+.message {
+  position: relative;
+  padding-right: 80px;
+}
+
+.message-actions {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  background: #2b2d31;
+  padding: 4px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.message:hover .message-actions {
+  opacity: 1;
+}
+
+.message-action-btn {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  cursor: pointer;
+  color: #b5bac1;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.message-action-btn:hover:not(.disabled) {
+  background: #404249;
+  color: #dbdee1;
+}
+
+.message-action-btn.delete-btn:hover:not(.disabled) {
+  background: #da373c;
+  color: white;
+}
+
+.message-action-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Adjust for members panel */
+.members-panel ~ .chat-area .message {
+  padding-right: 80px;
+}
