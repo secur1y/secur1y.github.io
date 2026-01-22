@@ -160,12 +160,12 @@
   <!-- Changelog Modal -->
   <div class="modal-overlay active" id="changelogModal">
     <div class="modal">
-      <div class="modal-header">Update 1.07</div>
+      <div class="modal-header">Update 1.091</div>
       <div class="modal-body">
         <ul style="list-style: none; padding: 0; line-height: 2;">
           <li>- Bug fixes</li>
-          <li>- Server PFPS</li>
-          <li>- Pings</li>
+          <li>- Memebers Sidebar</li>
+          <li>- Edit/Delete Messages</li>
           <li>PLEASE REPORT ALL BUGS TO THE USER "admin" OR AT admin@secur1y.com!!</li>
         </ul>
       </div>
@@ -221,6 +221,20 @@
     </div>
   </div>
 
+  <!-- Edit Message Modal -->
+  <div class="modal-overlay" id="editMessageModal">
+    <div class="modal">
+      <div class="modal-header">Edit Message</div>
+      <div class="modal-body">
+        <textarea class="modal-input" id="editMessageInput" rows="4" placeholder="Enter new message..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancelEditBtn">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="saveEditBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Server Settings Modal -->
   <div class="modal-overlay" id="serverSettingsModal">
     <div class="modal">
@@ -255,7 +269,7 @@
     </div>
   </div>
 
-  <!-- Context Menu -->
+  <!-- Context Menu for Servers -->
   <div id="contextMenu" class="context-menu">
     <div class="context-menu-item" id="serverSettingsMenuItem">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -268,6 +282,22 @@
         <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
       </svg>
       Leave Server
+    </div>
+  </div>
+
+  <!-- Message Context Menu -->
+  <div id="messageContextMenu" class="context-menu">
+    <div class="context-menu-item" id="editMessageItem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+      </svg>
+      Edit Message
+    </div>
+    <div class="context-menu-item" id="deleteMessageItem" style="color: #f23f42;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+      </svg>
+      Delete Message
     </div>
   </div>
 
