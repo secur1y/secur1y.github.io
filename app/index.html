@@ -62,6 +62,9 @@
     <div id="channelsList" style="display: none;">
       <div class="channel-header">
         <span>TEXT CHANNELS</span>
+        <svg class="add-channel-btn" id="createChannelBtn" viewBox="0 0 24 24" fill="currentColor" title="Create Channel">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+        </svg>
       </div>
       <div id="channelsContainer"></div>
     </div>
@@ -78,6 +81,12 @@
     <div class="chat-input-container" id="chatInputContainer" style="display: none;">
       <textarea class="chat-input" id="chatInput" placeholder="Type a message..." rows="1"></textarea>
     </div>
+  </div>
+
+  <!-- Members Panel -->
+  <div class="members-panel" id="membersPanel" style="display: none;">
+    <div class="members-header">MEMBERS</div>
+    <div class="members-container" id="membersContainer"></div>
   </div>
 
   <!-- Add Friend Modal -->
@@ -151,12 +160,12 @@
   <!-- Changelog Modal -->
   <div class="modal-overlay active" id="changelogModal">
     <div class="modal">
-      <div class="modal-header">Update 1.091</div>
+      <div class="modal-header">Update 1.07</div>
       <div class="modal-body">
         <ul style="list-style: none; padding: 0; line-height: 2;">
-          <li>- Bug fixes</li></li>
-          <li>- Extra Server Functions</li>
-          <li>- Pings (BROKEN)</li>
+          <li>- Bug fixes</li>
+          <li>- Server PFPS</li>
+          <li>- Pings</li>
           <li>PLEASE REPORT ALL BUGS TO THE USER "admin" OR AT admin@secur1y.com!!</li>
         </ul>
       </div>
@@ -196,157 +205,27 @@
     </div>
   </div>
 
-<!-- Replace your existing Server Settings Modal with this updated version -->
-<div class="modal-overlay" id="serverSettingsModal">
-  <div class="modal">
-    <div class="modal-header">Server Settings</div>
-    <div class="modal-body">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <div class="account-avatar" id="serverAvatar"></div>
+  <!-- Create Channel Modal -->
+  <div class="modal-overlay" id="createChannelModal">
+    <div class="modal">
+      <div class="modal-header">Create Channel</div>
+      <div class="modal-body">
+        <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Channel Name</label>
+        <input type="text" class="modal-input" id="channelNameInput" placeholder="new-channel">
+        <div style="font-size: 12px; color: #949ba4; margin-top: 8px;">Channel names are lowercase with dashes instead of spaces</div>
       </div>
-      
-      <!-- Add this upload button for server profile picture -->
-      <label for="serverPfpInput" class="upload-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-        </svg>
-        Upload Server Picture
-      </label>
-      <input type="file" id="serverPfpInput" accept="image/*" style="display: none;">
-      
-      <label style="display: block; margin-bottom: 8px; margin-top: 20px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Server Name</label>
-      <input type="text" class="modal-input" id="serverSettingsName" placeholder="Server Name" style="margin-bottom: 16px;">
-      
-      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Invite Code</label>
-      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-        <input type="text" class="modal-input" id="serverInviteCode" readonly style="margin-bottom: 0;">
-        <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" id="cancelChannelBtn">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="confirmChannelBtn">Create</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
-      <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
-      <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
-    </div>
-  </div>
-</div>
-
-<div id="contextMenu" class="context-menu">
-  <div class="context-menu-item" id="serverSettingsMenuItem">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M19.738 10H22V14H19.739C19.498 14.931 19.1 15.798 18.565 16.564L20 18L18 20L16.565 18.564C15.797 19.099 14.932 19.498 14 19.738V22H10V19.738C9.069 19.498 8.203 19.099 7.436 18.564L6 20L4 18L5.436 16.564C4.901 15.799 4.502 14.932 4.262 14H2V10H4.262C4.502 9.068 4.9 8.202 5.436 7.436L4 6L6 4L7.436 5.436C8.202 4.9 9.068 4.502 10 4.262V2H14V4.261C14.932 4.502 15.797 4.9 16.565 5.435L18 3.999L20 5.999L18.564 7.436C19.099 8.202 19.498 9.069 19.738 10ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"/>
-    </svg>
-    Server Settings
-  </div>
-  <div class="context-menu-item" id="leaveServerMenuItem" style="display: none;">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-    </svg>
-    Leave Server
-  </div>
-</div>
-
-  <!-- Update Notification -->
-  <div id="updateNotification" class="update-notification">
-    <div class="update-content">
-      <strong>New version available!</strong>
-      <p>Please reload the page to get the latest updates.</p>
-      <button class="modal-btn modal-btn-primary" onclick="location.reload()">Reload Now</button>
-    </div>
   </div>
 
-  <!-- Notification Sound -->
-  <audio id="notificationSound" preload="auto">
-    <source src="https://github.com/secur1y/secur1y.github.io/raw/refs/heads/main/assets/ping.mp3" type="audio/mpeg">
-  </audio>
-
-  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k" src="https://clerk.secur1y.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
-  <script type="module" src="main.js"></script>
-
-<div class="modal-overlay" id="roleEditorModal">
-  <div class="modal">
-    <div class="modal-header">Edit Role</div>
-    <div class="modal-body">
-      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Role Name</label>
-      <input type="text" class="modal-input" id="roleEditorName" placeholder="Role Name">
-      
-      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Role Color</label>
-      <input type="color" class="modal-input" id="roleEditorColor" value="#dcddde">
-      
-      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Permissions</label>
-      <div class="permissions-list">
-        <label class="permission-item">
-          <input type="checkbox" id="permAdmin">
-          <div>
-            <div class="permission-name">Administrator</div>
-            <div class="permission-desc">All permissions</div>
-          </div>
-        </label>
-        <label class="permission-item">
-          <input type="checkbox" id="permManageMessages">
-          <div>
-            <div class="permission-name">Manage Messages</div>
-            <div class="permission-desc">Delete any message</div>
-          </div>
-        </label>
-        <label class="permission-item">
-          <input type="checkbox" id="permManageChannels">
-          <div>
-            <div class="permission-name">Manage Channels</div>
-            <div class="permission-desc">Create, edit, and delete channels and groups</div>
-          </div>
-        </label>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="modal-btn modal-btn-cancel" id="closeRoleEditorBtn">Cancel</button>
-      <button class="modal-btn modal-btn-primary" id="saveRoleBtn">Save</button>
-    </div>
-  </div>
-</div>
-
-<!-- Channel Settings Modal -->
-<div class="modal-overlay" id="channelSettingsModal">
-  <div class="modal">
-    <div class="modal-header">Channel Settings</div>
-    <div class="modal-body">
-      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Channel Name</label>
-      <input type="text" class="modal-input" id="channelSettingsName" placeholder="channel-name">
-      <div style="font-size: 12px; color: #949ba4; margin-top: 4px;">Lowercase, max 15 chars, spaces become dashes</div>
-      
-      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Who Can View This Channel</label>
-      <div style="font-size: 12px; color: #949ba4; margin-bottom: 8px;">Leave empty for everyone. Admin & Manage Channels bypass this.</div>
-      <div id="channelViewRoles" class="role-permissions-container"></div>
-      
-      <label style="display: block; margin-bottom: 8px; margin-top: 16px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Who Can Send Messages</label>
-      <div style="font-size: 12px; color: #949ba4; margin-bottom: 8px;">Leave empty for everyone. Admin & Manage Channels bypass this.</div>
-      <div id="channelWriteRoles" class="role-permissions-container"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="modal-btn modal-btn-cancel" id="closeChannelSettingsBtn">Cancel</button>
-      <button class="modal-btn modal-btn-primary" id="saveChannelSettingsBtn">Save</button>
-    </div>
-  </div>
-</div>
-
-<!-- Channel Context Menu -->
-<div id="channelContextMenu" class="context-menu">
-  <div class="context-menu-item" id="channelSettingsMenuItem">Channel Settings</div>
-  <div class="context-menu-item" id="deleteChannelMenuItem" style="color: #f23f42;">Delete Channel</div>
-</div>
-
-<!-- Update Server Settings Modal to include Roles tab -->
-<div class="modal-overlay" id="serverSettingsModal">
-  <div class="modal" style="width: 700px; max-width: 90vw;">
-    <div class="modal-header">
-      <div class="server-settings-tabs">
-        <div class="settings-tab active" id="serverOverviewTab">Overview</div>
-        <div class="settings-tab" id="serverRolesTab">Roles</div>
-      </div>
-    </div>
-    <div class="modal-body">
-      <!-- Overview Content -->
-      <div id="serverOverviewContent">
+  <!-- Server Settings Modal -->
+  <div class="modal-overlay" id="serverSettingsModal">
+    <div class="modal">
+      <div class="modal-header">Server Settings</div>
+      <div class="modal-body">
         <div style="text-align: center; margin-bottom: 20px;">
           <div class="account-avatar" id="serverAvatar"></div>
         </div>
@@ -368,45 +247,46 @@
           <button class="modal-btn modal-btn-primary" id="copyInviteBtn" style="padding: 10px 16px;">Copy</button>
         </div>
       </div>
-      
-      <!-- Roles Content -->
-      <div id="serverRolesContent" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <h3 style="margin: 0;">Server Roles</h3>
-          <button class="modal-btn modal-btn-primary" id="createRoleBtn">Create Role</button>
-        </div>
-        <div id="rolesListContainer" class="roles-list"></div>
+      <div class="modal-footer">
+        <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
+        <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
+        <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="modal-btn" id="deleteServerBtn" style="background: #da373c; color: white; margin-right: auto;">Delete Server</button>
-      <button class="modal-btn modal-btn-cancel" id="closeServerSettingsBtn">Close</button>
-      <button class="modal-btn modal-btn-primary" id="saveServerSettingsBtn">Save</button>
-    </div>
-  </div>
-</div>
-
-   <div class="members-panel" id="membersPanel" style="display: none;">
-    <div class="members-header">MEMBERS</div>
-    <div class="members-container" id="membersContainer"></div>
   </div>
 
-<!-- Create Channel Modal -->
-<div class="modal-overlay" id="createChannelModal">
-  <div class="modal">
-    <div class="modal-header">Create Channel</div>
-    <div class="modal-body">
-      <label style="display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #b5bac1; text-transform: uppercase;">Channel Name</label>
-      <input type="text" class="modal-input" id="channelNameInput" placeholder="new-channel">
-      <div style="font-size: 12px; color: #949ba4; margin-top: 8px;">Channel names are lowercase with dashes instead of spaces</div>
+  <!-- Context Menu -->
+  <div id="contextMenu" class="context-menu">
+    <div class="context-menu-item" id="serverSettingsMenuItem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M19.738 10H22V14H19.739C19.498 14.931 19.1 15.798 18.565 16.564L20 18L18 20L16.565 18.564C15.797 19.099 14.932 19.498 14 19.738V22H10V19.738C9.069 19.498 8.203 19.099 7.436 18.564L6 20L4 18L5.436 16.564C4.901 15.799 4.502 14.932 4.262 14H2V10H4.262C4.502 9.068 4.9 8.202 5.436 7.436L4 6L6 4L7.436 5.436C8.202 4.9 9.068 4.502 10 4.262V2H14V4.261C14.932 4.502 15.797 4.9 16.565 5.435L18 3.999L20 5.999L18.564 7.436C19.099 8.202 19.498 9.069 19.738 10ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"/>
+      </svg>
+      Server Settings
     </div>
-    <div class="modal-footer">
-      <button class="modal-btn modal-btn-cancel" id="cancelChannelBtn">Cancel</button>
-      <button class="modal-btn modal-btn-primary" id="confirmChannelBtn">Create</button>
+    <div class="context-menu-item" id="leaveServerMenuItem" style="display: none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+      </svg>
+      Leave Server
     </div>
   </div>
-</div>
-  
+
+  <!-- Update Notification -->
+  <div id="updateNotification" class="update-notification">
+    <div class="update-content">
+      <strong>New version available!</strong>
+      <p>Please reload the page to get the latest updates.</p>
+      <button class="modal-btn modal-btn-primary" onclick="location.reload()">Reload Now</button>
+    </div>
+  </div>
+
+  <!-- Notification Sound -->
+  <audio id="notificationSound" preload="auto">
+    <source src="https://github.com/secur1y/secur1y.github.io/raw/refs/heads/main/assets/ping.mp3" type="audio/mpeg">
+  </audio>
+
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_live_Y2xlcmsuc2VjdXIxeS5jb20k" src="https://clerk.secur1y.com/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+  <script type="module" src="main.js"></script>
+
 </body>
 </html>
-
