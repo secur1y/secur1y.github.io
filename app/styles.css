@@ -16,8 +16,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 150%;
-  height: 150%;
+  width: 100%;
+  height: 100%;
   background: #313338;
   display: flex;
   align-items: center;
@@ -362,6 +362,39 @@ body {
   font-weight: 600;
 }
 
+/* Mention Badge */
+.mention-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #f23f42;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.server-icon .mention-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #f23f42;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 8px;
+  min-width: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
 /* Channels List */
 #channelsList {
   flex: 1;
@@ -598,6 +631,93 @@ body {
   cursor: not-allowed;
 }
 
+/* Mention Styling in Messages */
+.mention {
+  background: rgba(88, 101, 242, 0.3);
+  color: #dee0fc;
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.mention:hover {
+  background: rgba(88, 101, 242, 0.5);
+  color: #fff;
+}
+
+/* Mention Autocomplete */
+.mention-autocomplete {
+  position: fixed;
+  background: #111214;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+  min-width: 280px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  z-index: 10000;
+}
+
+.mention-autocomplete::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mention-autocomplete::-webkit-scrollbar-thumb {
+  background: #1e1f22;
+  border-radius: 4px;
+}
+
+.mention-header {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #949ba4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #1e1f22;
+}
+
+.mention-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.mention-item:hover {
+  background: #404249;
+}
+
+.mention-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #5865f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.mention-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mention-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #dbdee1;
+}
+
 /* Friend Request Actions */
 #friendRequestActions {
   padding: 16px;
@@ -664,6 +784,15 @@ body {
 
 .chat-input::placeholder {
   color: #6d6f78;
+}
+
+.chat-input::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-input::-webkit-scrollbar-thumb {
+  background: #1e1f22;
+  border-radius: 4px;
 }
 
 /* Members Panel */
@@ -801,6 +930,15 @@ body {
   max-height: 90vh;
   overflow: auto;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
+}
+
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #1e1f22;
+  border-radius: 4px;
 }
 
 .modal-header {
@@ -1052,5 +1190,9 @@ body {
   
   .members-panel {
     width: 200px;
+  }
+  
+  .members-panel ~ .chat-area {
+    right: 200px;
   }
 }
